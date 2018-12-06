@@ -790,7 +790,7 @@ public class SettingListener implements ISetting {
     }
 
     @Override
-    public void vRetGetDeviceVersion(int result, String cur_version, int iUbootVersion, int iKernelVersion, int iRootfsVersion) {
+    public void vRetGetDeviceVersion(int result, String cur_version, int iUbootVersion, int iKernelVersion, int iRootfsVersion, int contactId) {
 
     }
 
@@ -810,7 +810,7 @@ public class SettingListener implements ISetting {
     }
 
     @Override
-    public void vRetDeviceNotSupport() {
+    public void vRetDeviceNotSupport(String deviceId) {
 
     }
 
@@ -1184,9 +1184,10 @@ public class SettingListener implements ISetting {
      * @param bRequestResult Index请求结果标记  非0时正常  为0时需要重新请求P2P服务器
      */
     @Override
-    public void vRetGetIndexFriendStatus(int count, String[] contactIds, int[] IdProtery, int[] status, int[] DevTypes, int[] SubType, int[] DefenceState, byte bRequestResult) {
+    public void vRetGetIndexFriendStatus(int count, String[] contactIds, int[] IdProtery, int[] status, int[] DevTypes, int[] SubType, int[] DefenceState, byte bRequestResult, long[] defenceFlag) {
 
     }
+
 
     /**
      * 红外LED关闭
@@ -1297,6 +1298,147 @@ public class SettingListener implements ISetting {
     @Override
     public void vRetGroupMessageOver() {
 
+    }
+
+    @Override
+    public void vRetLoginAnother(int LoginStatus) {
+
+    }
+
+    @Override
+    public void vRetDefenceFrag(String deviceId, int frag) {
+
+    }
+
+    @Override
+    public void ACK_vResult(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetGetRTSPResult(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetSetRTSPResult(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetRTSPType_M3(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetSetRTSPPWD(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetUpdateId(String ipFour, int msgId, int result) {
+
+    }
+
+    @Override
+    public void vRetGetLockState(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void ACK_vRetGetVisitorAuthority(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetVisitorAuthority(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetGetDeviceIPInfo(String contactId, byte[] data) {
+
+    }
+
+    @Override
+    public void vRetVisitorAuthority(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetGetVisitorAuthority(String deviceId, byte[] data) {
+
+    }
+
+    @Override
+    public void vRetSetVisitorAuthority(String deviceId, byte[] data) {
+
+    }
+
+    @Override
+    public void vRetSetWhiteLight(String deviceId, int iResult) {
+
+    }
+
+    @Override
+    public void vRetSetWhiteLightSchedule(String deviceId, int iResult) {
+
+    }
+
+    @Override
+    public void vRetGetWhiteLightState(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetWhiteLightScheduleTimeSetting(String s, byte[] data) {
+
+    }
+
+    @Override
+    public void vRetGetWhiteLightSupport(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetSupport443DoorBell(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetNPCSettings(int iSrcID, int iCount, int[] iSettingID, int[] iValue) {
+
+    }
+
+    @Override
+    public void vRetSystemMsgNotify(long msgId, int msgType, byte[] msg, int msgSize) {
+
+    }
+
+    @Override
+    public void vRetGetSupportSetVisitorUnlock(String deviceId, int iResult) {
+
+    }
+
+    @Override
+    public void vRetSetVisitorUnlock(String deviceId, int iResult) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetVisitorUnlock(String deviceId, int result) {
+
+    }
+
+
+    @Override
+    public void vRetGetNightColorSupport(String deviceId, int result) {
+        RxBus.get().post(RxBUSAction.EVENT_RET_GET_NIGHT_COLOR,new Integer(result));
+    }
+
+    @Override
+    public void ACK_vRetSetNightColorSupport(String deviceId, int result) {
+        RxBus.get().post(RxBUSAction.EVENT_RET_SET_NIGHT_COLOR,new Integer(result));
     }
 
 }

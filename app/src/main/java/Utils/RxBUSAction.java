@@ -23,5 +23,7 @@ public class RxBUSAction {
     public final static String EVENT_RET_GET_MOTION="EVENT_RET_GET_MOTION";
     public final static String EVENT_RET_GET_REMOTE_DEFENCE="EVENT_RET_GET_REMOTE_DEFENCE";
     public final static String EVENT_RET_SET_REMOTE_DEFENCE="EVENT_RET_SET_REMOTE_DEFENCE";
+    public final static String EVENT_RET_GET_NIGHT_COLOR = "EVENT_RET_GET_NIGHT_COLOR";
+    public final static String EVENT_RET_SET_NIGHT_COLOR = "EVENT_RET_SET_NIGHT_COLOR";
 
 }

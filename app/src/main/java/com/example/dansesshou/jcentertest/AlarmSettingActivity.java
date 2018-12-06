@@ -29,12 +29,16 @@ public class AlarmSettingActivity extends BaseActivity {
     Switch switchDefence;
     @BindView(R.id.switch_motion)
     Switch switchMotion;
+    @BindView(R.id.switch_light)
+    Switch switchLight;
     @BindView(R.id.alarm_progress)
     ProgressBar alarmProgress;
     @BindView(R.id.defence_progress)
     ProgressBar defenceProgress;
     @BindView(R.id.motion_progress)
     ProgressBar motionProgress;
+    @BindView(R.id.light_progress)
+    ProgressBar lightProgress;
 
     private String idOrIp, password, userId;
     private String[] last_bind_data, new_data;
@@ -142,7 +146,6 @@ public class AlarmSettingActivity extends BaseActivity {
 
         alarmProgress.setVisibility(View.GONE);
         switchAlarm.setVisibility(View.VISIBLE);
-
     }
 
     @Subscribe(
@@ -288,9 +291,72 @@ public class AlarmSettingActivity extends BaseActivity {
                 password, value);
     }
 
+    @Subscribe(
+            tags = {
+                    @Tag(RxBUSAction.EVENT_RET_GET_NIGHT_COLOR)
+            }
+    )
+    public void getLightState(Integer state) {
+        //获取灯光状态    state  0: off   1:on
+        if (state == 1) {
+            switchLight.setChecked(true);
+            switchLight.setTag("1");
+        } else {
+            switchLight.setChecked(false);
+            switchLight.setTag("0");
+        }
+
+        lightProgress.setVisibility(View.GONE);
+        switchLight.setVisibility(View.VISIBLE);
+    }
+
+    @Subscribe(
+            tags = {
+                    @Tag(RxBUSAction.EVENT_RET_SET_NIGHT_COLOR)
+            }
+    )
+    public void setLightState(Integer result) {
+        //获取灯光颜色状态       result  0: off   1:on   255: 设备不支持
+        if (result == 0) {
+            txt.append(getString(R.string.setting_succeed));
+            txt.append("\n");
+            if ("1".equals(switchLight.getTag())) {
+                switchLight.setTag("0");
+            } else {
+                switchLight.setTag("1");
+            }
+        } else if (result == 255) {
+            txt.append(getString(R.string.device_not_support) + ",");
+            txt.append(getString(R.string.setting_failure));
+            txt.append("\n");
+            if ("1".equals(switchLight.getTag())) {
+                switchLight.setChecked(true);
+            } else {
+                switchLight.setChecked(false);
+            }
+        } else {
+            txt.append(getString(R.string.setting_failure));
+            txt.append("\n");
+            if ("1".equals(switchLight.getTag())) {
+                switchLight.setChecked(true);
+            } else {
+                switchLight.setChecked(false);
+            }
+        }
+
+        lightProgress.setVisibility(View.GONE);
+        switchLight.setVisibility(View.VISIBLE);
+    }
+
+
+    private void setLight(int value) {
+        P2PHandler.getInstance().setLightMode(idOrIp,
+                password, value);
+    }
+
     private boolean isClickAlarm = false;
 
-    @OnClick({R.id.switch_alarm, R.id.switch_defence, R.id.switch_motion})
+    @OnClick({R.id.switch_alarm, R.id.switch_defence, R.id.switch_motion, R.id.switch_light})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.switch_alarm:
@@ -328,6 +394,18 @@ public class AlarmSettingActivity extends BaseActivity {
                 motionProgress.setVisibility(View.VISIBLE);
                 switchMotion.setVisibility(View.GONE);
                 break;
+            case R.id.switch_light:
+                if ("1".equals(view.getTag())) {
+                    txt.append(getString(R.string.light_on_to_off));
+                    txt.append("\n");
+                    setLight(0);
+                }else {
+                    txt.append(getString(R.string.light_off_to_on));
+                    txt.append("\n");
+                    setLight(1);
+                }
+                default:
+                    break;
         }
     }
 
