@@ -1,6 +1,7 @@
 package com.example.dansesshou.jcentertest;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.gwelldemo.R;
 import com.p2p.core.BaseMonitorActivity;
+import com.p2p.core.MediaPlayer;
 import com.p2p.core.P2PHandler;
 import com.p2p.core.P2PValue;
 import com.p2p.core.P2PView;
@@ -86,12 +88,14 @@ public class MonitoerActivity extends BaseMonitorActivity {
     private int screenWidth, screenHeigh;
     private int recordFlag = 0;
     private String pathName = "";
+    private Activity activity;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoer);
+        activity = this;
         ButterKnife.bind(this);
         userId = getIntent().getStringExtra(LoginActivity.USERID);
         initUI();
@@ -107,10 +111,10 @@ public class MonitoerActivity extends BaseMonitorActivity {
                 .subscribe(granted -> {
                     if (granted) { // 在android 6.0之前会默认返回true
                         // 已经获取权限
-                        Log.e("MonitoerActivity","已授予CAMERA权限");
+                        Log.e("MonitoerActivity", "已授予CAMERA权限");
                     } else {
                         // 未获取权限
-                        ToastUtils.ShowError(MonitoerActivity.this, "您没有授权CAMERA权限，请在设置中打开授权", Toast.LENGTH_SHORT,true);
+                        ToastUtils.ShowError(MonitoerActivity.this, "您没有授权CAMERA权限，请在设置中打开授权", Toast.LENGTH_SHORT, true);
                     }
                 });
     }
@@ -133,7 +137,7 @@ public class MonitoerActivity extends BaseMonitorActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        setMute(false);
+                        getAudioPermission();
                         return true;
                     case MotionEvent.ACTION_UP:
                         setMute(true);
@@ -142,6 +146,25 @@ public class MonitoerActivity extends BaseMonitorActivity {
                 return false;
             }
         });
+    }
+
+    private void getAudioPermission() {
+        RxPermissions rxPermissions = new RxPermissions(activity);
+        boolean isGrant = rxPermissions.isGranted(Manifest.permission.RECORD_AUDIO);
+        if (isGrant) {
+            setMute(false);
+        } else {
+            rxPermissions.request(Manifest.permission.RECORD_AUDIO)
+                    .subscribe(granted -> {
+                        if (granted) { // 在android 6.0之前会默认返回true
+                            // 已经获取权限
+                            MediaPlayer.openAudioRecord();
+                        } else {
+                            // 未获取权限
+                            ToastUtils.ShowError(MonitoerActivity.this, "您没有授权麦克风权限，请在设置中打开授权", Toast.LENGTH_SHORT, true);
+                        }
+                    });
+        }
     }
 
     private void initData() {
@@ -217,11 +240,11 @@ public class MonitoerActivity extends BaseMonitorActivity {
     }
 
     @OnClick(R.id.btn_call)
-    void CallOnClick(){
+    void CallOnClick() {
         callID = etId.getText().toString().trim();//设备号
         CallPwd = etPwd.getText().toString().trim();
-        if(TextUtils.isEmpty(callID)||TextUtils.isEmpty(CallPwd)){
-            ToastUtils.ShowError(this,getString(R.string.tips_idpwd),2000,true);
+        if (TextUtils.isEmpty(callID) || TextUtils.isEmpty(CallPwd)) {
+            ToastUtils.ShowError(this, getString(R.string.tips_idpwd), 2000, true);
             return;
         }
         String pwd = P2PHandler.getInstance().EntryPassword(CallPwd);//经过转换后的设备密码
@@ -251,20 +274,20 @@ public class MonitoerActivity extends BaseMonitorActivity {
         checkSDPermision();
     }
 
-    private void checkSDPermision(){
+    private void checkSDPermision() {
         RxPermissions rxPermissions = new RxPermissions(this);
-        boolean result=false;
-        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        boolean result = false;
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) { // 在android 6.0之前会默认返回true
                         // 已经获取权限
                         int d = P2PHandler.getInstance().setScreenShotpath(Util.getScreenShotPath(), "123.jpg");
                         Log.e("dxsTest", "d:" + d);
                         captureScreen(-1);
-                        Log.e("MonitoerActivity","已授予STORAGE权限");
+                        Log.e("MonitoerActivity", "已授予STORAGE权限");
                     } else {
                         // 未获取权限
-                        ToastUtils.ShowError(MonitoerActivity.this, "您没有授权STORAGE权限，请在设置中打开授权", Toast.LENGTH_SHORT,true);
+                        ToastUtils.ShowError(MonitoerActivity.this, "您没有授权STORAGE权限，请在设置中打开授权", Toast.LENGTH_SHORT, true);
                     }
                 });
     }
