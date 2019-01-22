@@ -76,7 +76,7 @@
         <activity android:name="com.example.dansesshou.jcentertest.AliPlayActivity"></activity>
         <activity
             android:name="com.example.dansesshou.jcentertest.ContactInfoActivity"
-            android:label="@string/title_activity_contact_info"
+            android:label="ContactInfoActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -137,7 +137,6 @@
     <string name="input_cmd_bytes">Input command (byte array (use, separate))</string>
     <string name="floatview">Suspension window test</string>
     <string name="pano_monitor">Panoramic monitoring</string>
-    <string name="title_activity_contact_info">ContactInfoActivity</string>
     <string name="four_split">four split</string>
     <string name="two_split">two split</string>
     <string name="mix">mix</string>
