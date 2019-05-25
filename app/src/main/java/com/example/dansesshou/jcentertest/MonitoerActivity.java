@@ -248,7 +248,7 @@ public class MonitoerActivity extends BaseMonitorActivity {
             return;
         }
         String pwd = P2PHandler.getInstance().EntryPassword(CallPwd);//经过转换后的设备密码
-        P2PHandler.getInstance().call(userId, pwd, true, 1, callID, "", "", 2, callID);
+        P2PHandler.getInstance().call(userId, pwd, true, 1, callID, "", "", 2, callID,0);
     }
 
     @OnClick(R.id.btn_sd)

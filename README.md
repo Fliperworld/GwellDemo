@@ -27,6 +27,28 @@
 
 # P2P-Core 使用说明
 ### 1.版本记录
+#####  改用aar，包 (2019.5.25)
+* 【修改】p2p库升级为3.0
+P2PHandle中大部分方法增加参数：localAreaIp
+例：
+p2p2.0:
+    /**
+     * @param contactId   联系人ID （联系人类型是设备）
+     *                    如果是局域网用ip，不是局域网用联系人id 如果是AP模式则为"1"
+     * @param password    联系人监控密码
+     */
+    public void getNpcSettings(String contactId, String password) ;
+p2p3.0:
+    /**
+     * @param contactId   联系人ID （联系人类型是设备）
+     *                    一定是设备id
+     * @param password    联系人监控密码
+     * @param localAreaIp 局域网int型表示的设备ip地址，ap模式下传真实ip值，外网通信置0
+     */
+    public void getNpcSettings(String contactId, String password, int localAreaIp) ;
+
+* 【修改】全景全新修改
+
 #####  0.4.4.9 (2018.12.06)
 * 【新增】红外彩色模式接口添加
 

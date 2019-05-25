@@ -118,7 +118,7 @@ public class SerialAppActivity extends BaseActivity {
                     return;
                 }
                 P2PHandler.getInstance().vSendDataToURAT(deviceId,
-                        devicePwd, cmdBody.getBytes(), cmdBody.getBytes().length, true);
+                        devicePwd, cmdBody.getBytes(), cmdBody.getBytes().length, true,0);
                 break;
             case R.id.send_bytes:
                 cmdBody = etCmdBytes.getText().toString().trim();
@@ -138,7 +138,7 @@ public class SerialAppActivity extends BaseActivity {
 
                     }
                     P2PHandler.getInstance().vSendDataToURAT(deviceId,
-                            devicePwd, byteBuffer, byteBuffer.length, true);
+                            devicePwd, byteBuffer, byteBuffer.length, true,0);
                 }else {
                     Toast.makeText(SerialAppActivity.this, R.string.input_true_format, Toast.LENGTH_SHORT).show();
                 }

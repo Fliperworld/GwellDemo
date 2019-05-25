@@ -16,10 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gwell.pano.PanoMode;
 import com.gwelldemo.R;
 import com.p2p.core.P2PHandler;
 import com.p2p.core.pano.BasePanoActivity;
-import com.p2p.core.pano.PanoManager;
 import com.p2p.core.pano.PanoParentRelativelayout;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -73,10 +73,10 @@ public class PanoramaActivity extends BasePanoActivity {
         userId = getIntent().getStringExtra(LoginActivity.USERID);
         callID = getIntent().getStringExtra("callID");
         CallPwd = getIntent().getStringExtra("CallPwd");
-        initPanoSDK();
+        initPano();
         checkCamerPermission();
         regFilter();
-        PanoManager.getInstance().cutShape(1);
+        setCutRatio(1);
     }
 
     private void regFilter() {
@@ -94,7 +94,7 @@ public class PanoramaActivity extends BasePanoActivity {
                 P2PHandler.getInstance().openAudioAndStartPlaying(1, 1);
                 tvContent.append("P2P_ACCEPT\n");
             } else if (intent.getAction().equals(P2P_READY)) {
-                starPlay();
+                startPlay();
                 tvContent.append("P2P_READY\n");
             } else if (intent.getAction().equals(P2P_REJECT)) {
                 int reason_code = intent.getIntExtra("reason_code", -1);
@@ -136,7 +136,7 @@ public class PanoramaActivity extends BasePanoActivity {
     public void callDevice() {
         Log.e(TAG, "callDevice: callID:" + callID + ",CallPwd:" + CallPwd + "\n");
         String pwd = P2PHandler.getInstance().EntryPassword(CallPwd);//经过转换后的设备密码
-        P2PHandler.getInstance().call(userId, pwd, true, 1, callID, "", "", 2, callID);
+        P2PHandler.getInstance().call(userId, pwd, true, 1, callID, "", "", 2, callID,0);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -146,12 +146,14 @@ public class PanoramaActivity extends BasePanoActivity {
     }
 
     @Override
-    public void onCaptureSreenShot(boolean result, String path) {
-        Log.e(TAG, "onCaptureSreenShot: result:" + result + ",path:" + path);
-        if (result) {
-            ToastUtils.ShowSuccess(this, getString(R.string.screenshot_success), Toast.LENGTH_LONG, true);
-        } else {
-            ToastUtils.ShowError(this, getString(R.string.screenshot_error), Toast.LENGTH_LONG, true);
+    protected void onCaptureScreenResult(boolean isSuccess, int prePoint) {
+        {
+            Log.e(TAG, "onCaptureSreenShot: result:" + isSuccess + ",path:" + prePoint);
+            if (isSuccess) {
+                ToastUtils.ShowSuccess(this, getString(R.string.screenshot_success), Toast.LENGTH_LONG, true);
+            } else {
+                ToastUtils.ShowError(this, getString(R.string.screenshot_error), Toast.LENGTH_LONG, true);
+            }
         }
     }
 
@@ -209,23 +211,23 @@ public class PanoramaActivity extends BasePanoActivity {
                 break;
             case R.id.btn_change_four_split:
                 //四分屏
-                setShowMode(PanoManager.PM_QUARTER);
+                setShowMode(PanoMode.PM_FOUR_SCREEN);
                 break;
             case R.id.btn_change_two_split:
                 //二分屏
-                setShowMode(PanoManager.PM_2PLANE);
+                setShowMode(PanoMode.PM_SCROLL);
                 break;
             case R.id.btn_change_mix:
                 //混合
-                setShowMode(PanoManager.PM_NAVMIX);
+                setShowMode(PanoMode.PM_MIX);
                 break;
             case R.id.btn_change_column:
                 //圆柱
-                setShowMode(PanoManager.PM_CYLINDER);
+                setShowMode(PanoMode.PM_CYLINDER);
                 break;
             case R.id.btn_change_circle:
                 //圆
-                setShowMode(PanoManager.PM_NAVSPHERE);
+                setShowMode(PanoMode.PM_HALF_SPHERE);
                 break;
         }
     }
@@ -250,7 +252,12 @@ public class PanoramaActivity extends BasePanoActivity {
     private void capture(int type) {
         String path = Util.getScreenShotPath() + "/test/123.jpg";
         Log.e(TAG, "capture: path:" + path);
-        captureScreenUnity(-1, path);
+        if (type == 0) {
+            captureScreenPano(-1, path);
+        } else {
+            captureScreenPano(1, path);
+        }
+        saveImage(path);
     }
 
     //挂断

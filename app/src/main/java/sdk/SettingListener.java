@@ -64,14 +64,16 @@ public class SettingListener implements ISetting {
     }
 
     @Override
-    public void ACK_vRetSetNpcSettingsBuzzer(int msgId, int result) {
+    public void ACK_vRetSetNpcSettingsBuzzer(int i, String s, int i1) {
 
     }
 
     @Override
-    public void ACK_vRetSetNpcSettingsMotion(int msgId, int result) {
+    public void ACK_vRetSetNpcSettingsMotion(int i, String s, int i1) {
 
     }
+
+
 
     @Override
     public void ACK_vRetSetNpcSettingsRecordType(int msgId, int result) {
@@ -100,15 +102,16 @@ public class SettingListener implements ISetting {
     }
 
     @Override
-    public void ACK_vRetGetAlarmEmail(int msgId, int result) {
-        Integer i = result;
-        RxBus.get().post(RxBUSAction.EVENT_ACK_RET_GET_ALARM_EMAIL,i);
+    public void ACK_vRetGetAlarmEmail(int i, String s, int i1) {
+
     }
 
     @Override
-    public void ACK_vRetSetAlarmBindId(int srcID, int result) {
+    public void ACK_vRetSetAlarmBindId(int i, String s, int i1) {
 
     }
+
+
 
     @Override
     public void ACK_vRetGetAlarmBindId(int srcID, int result) {
@@ -168,9 +171,10 @@ public class SettingListener implements ISetting {
     }
 
     @Override
-    public void ACK_vRetGetDeviceVersion(int msgId, int result) {
+    public void ACK_vRetGetDeviceVersion(int i, int i1, int i2) {
 
     }
+
 
     @Override
     public void ACK_vRetCheckDeviceUpdate(int msgId, int result) {
@@ -333,7 +337,7 @@ public class SettingListener implements ISetting {
     }
 
     @Override
-    public void ACK_vRetSetNpcSettingsMotionSens(int msgId, int result) {
+    public void ACK_vRetSetNpcSettingsMotionSens(int i, String s, int i1) {
 
     }
 
@@ -391,16 +395,12 @@ public class SettingListener implements ISetting {
         RxBus.get().post(RxBUSAction.EVENT_RET_GET_REMOTE_DEFENCE,denfenceInfo);
     }
 
-    /**
-     * 远程录像
-     *
-     * @param state 0:off  1:on
-     * @see P2PHandler#getNpcSettings(String, String)
-     */
     @Override
-    public void vRetGetRemoteRecordResult(int state) {
+    public void vRetGetRemoteRecordResult(int i, int i1) {
 
     }
+
+
 
     /**
      * 获取蜂鸣器状态返回
@@ -414,16 +414,12 @@ public class SettingListener implements ISetting {
 
     }
 
-    /**
-     * 获取设备移动侦测状态
-     *
-     * @param state 1：开启 0：关闭 255：不支持
-     * @see P2PHandler#getNpcSettings(String, String)
-     */
     @Override
-    public void vRetGetMotionResult(int state) {
-        RxBus.get().post(RxBUSAction.EVENT_RET_GET_MOTION,new Integer(state));
+    public void vRetGetMotionResult(int i, int i1) {
+
     }
+
+
 
     /**
      * 获取视频格式返回
@@ -502,14 +498,8 @@ public class SettingListener implements ISetting {
 
     }
 
-    /**
-     * 获取人体红外开关状态
-     *
-     * @param state 0：关闭    1：开启
-     * @see P2PHandler#getNpcSettings(String, String)
-     */
     @Override
-    public void vRetGetInfraredSwitch(int state) {
+    public void vRetGetInfraredSwitch(int i, int i1) {
 
     }
 
@@ -605,15 +595,12 @@ public class SettingListener implements ISetting {
 
     }
 
-    /**
-     * 设置设备移动侦测状态
-     *
-     * @param result 0:设置成功  255：不支持  其他：操作失败
-     */
     @Override
-    public void vRetSetMotionResult(int result) {
-        RxBus.get().post(RxBUSAction.EVENT_RET_SET_MOTION,new Integer(result));
+    public void vRetSetMotionResult(int i, int i1) {
+
     }
+
+
 
     @Override
     public void vRetSetVideoFormatResult(int result) {
@@ -917,6 +904,11 @@ public class SettingListener implements ISetting {
     }
 
     @Override
+    public void vRetHxstPresetMotorPos(byte[] bytes) {
+
+    }
+
+    @Override
     public void vRetDefenceSwitchStatus(int result) {
 
     }
@@ -1171,23 +1163,10 @@ public class SettingListener implements ISetting {
 
     }
 
-    /**
-     * Index服务器返回设备信息（区别于P2P服务器返回数据，存在兼容标记）
-     *
-     * @param count          设备信息数量
-     * @param contactIds     设备ID
-     * @param IdProtery      设备属性 &0x1==1（最低位为1）则支持Index服务器
-     * @param status         设备在线状态 0:离线 1:在线
-     * @param DevTypes       设备类型
-     * @param SubType        设备子类型（需支持Index服务器）
-     * @param DefenceState   设备布撤防状态（需支持Index服务器）
-     * @param bRequestResult Index请求结果标记  非0时正常  为0时需要重新请求P2P服务器
-     */
     @Override
-    public void vRetGetIndexFriendStatus(int count, String[] contactIds, int[] IdProtery, int[] status, int[] DevTypes, int[] SubType, int[] DefenceState, byte bRequestResult, long[] defenceFlag) {
+    public void vRetGetIndexFriendStatus(int i, String[] strings, int[] ints, int[] ints1, int[] ints2, int[] ints3, int[] ints4, byte b, long[] longs, int[][] ints5, int[][] ints6, int[] ints7, short[] shorts) {
 
     }
-
 
     /**
      * 红外LED关闭
@@ -1346,32 +1325,12 @@ public class SettingListener implements ISetting {
     }
 
     @Override
-    public void ACK_vRetGetVisitorAuthority(String deviceId, int result) {
-
-    }
-
-    @Override
-    public void ACK_vRetSetVisitorAuthority(String deviceId, int result) {
-
-    }
-
-    @Override
     public void vRetGetDeviceIPInfo(String contactId, byte[] data) {
 
     }
 
     @Override
-    public void vRetVisitorAuthority(String deviceId, int result) {
-
-    }
-
-    @Override
-    public void vRetGetVisitorAuthority(String deviceId, byte[] data) {
-
-    }
-
-    @Override
-    public void vRetSetVisitorAuthority(String deviceId, byte[] data) {
+    public void vRetRetGarageLightStatus(String s, byte[] bytes) {
 
     }
 
@@ -1421,12 +1380,107 @@ public class SettingListener implements ISetting {
     }
 
     @Override
+    public void vRetGetObjectTracking(String s, int i) {
+
+    }
+
+    @Override
     public void vRetSetVisitorUnlock(String deviceId, int iResult) {
 
     }
 
     @Override
+    public void vRetSetObjectTracking(String s, int i) {
+
+    }
+
+    @Override
     public void ACK_vRetSetVisitorUnlock(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void ACK_vRetGetGarageLight(String s, int i) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetGarageLight(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetAuthManageMsgNotify(long l, byte b, byte[] bytes, int i) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetObjectTracking(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetGetScheduleDefence(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetGetSupportAddSensor(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetGetAlarmInterval(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetSetScheduleDefence(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetSetAlarmInterval(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetGuardPlan(String s, byte[] bytes) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetGuardPlan(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetGuardSetting(String s, byte[] bytes) {
+
+    }
+
+    @Override
+    public void ACK_vRetGuardSetting(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetFgP2PNotifyAppUpdate(int i, byte[] bytes, int i1) {
+
+    }
+
+    @Override
+    public void ACK_vRetWarmLightSetting(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetWarmLightSetting(String s, int i) {
+
+    }
+
+    @Override
+    public void vRetWhiteLightSchedule(String s, int i) {
 
     }
 

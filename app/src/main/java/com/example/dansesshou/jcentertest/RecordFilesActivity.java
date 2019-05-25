@@ -86,7 +86,7 @@ public class RecordFilesActivity extends AppCompatActivity {
                 }
                 //因获取到数据是按照时间从近到远顺序排序
                 //所以加载更多时startDate不用变,改变nextEndTime即可
-                P2PHandler.getInstance().getRecordFiles(deviceId, devicePwd, startDate, nextEndTime);
+                P2PHandler.getInstance().getRecordFiles(deviceId, devicePwd, startDate, nextEndTime,0);
             }
         });
         regFilter();
@@ -181,7 +181,7 @@ public class RecordFilesActivity extends AppCompatActivity {
             }
         });
         //获取录像列表
-        P2PHandler.getInstance().getRecordFiles(deviceId, devicePwd, startDate, endDate);
+        P2PHandler.getInstance().getRecordFiles(deviceId, devicePwd, startDate, endDate,0);
         rcRecordfiles.setAdapter(adapter);
         new Timer().schedule(new TimerTask() {
             @Override

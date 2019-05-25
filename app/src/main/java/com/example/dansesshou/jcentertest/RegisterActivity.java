@@ -93,8 +93,13 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             };
             //邮箱注册
+            /**
+             * MailCode 邮箱验证码
+             * HttpSend.getInstance().sendEmailVercode 发送验证码
+             *
+             */
             HttpSend.getInstance().register("1", email, "", "", password,
-                    repassword, "", "1", subscriberListener);
+                    repassword, "", "1","","", subscriberListener);
             //*************************技威代码插入**********************************
         }
     }

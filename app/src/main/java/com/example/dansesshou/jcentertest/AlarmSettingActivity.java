@@ -57,11 +57,11 @@ public class AlarmSettingActivity extends BaseActivity {
 
         //获取各设置的初始状态
         P2PHandler.getInstance().getNpcSettings(idOrIp,
-                password);
+                password,0);
 //        P2PHandler.getInstance().getDefenceStates(idOrIp,
 //                password);
         P2PHandler.getInstance()
-                .getBindAlarmId(idOrIp, password);
+                .getBindAlarmId(idOrIp, password,0);
     }
 
     boolean isBindAlarmId = false;
@@ -112,7 +112,7 @@ public class AlarmSettingActivity extends BaseActivity {
                 }
                 // last_bind_data=new_data;
                 P2PHandler.getInstance().setBindAlarmId(idOrIp,
-                        password, new_data.length, new_data);
+                        password, new_data.length, new_data,0);
             }else {
                 txt.append(getString(R.string.alarm_off_to_on));
                 txt.append("\n");
@@ -131,7 +131,7 @@ public class AlarmSettingActivity extends BaseActivity {
                 // last_bind_data=new_data;
 
                 P2PHandler.getInstance().setBindAlarmId(idOrIp,
-                        password, new_data.length, new_data);
+                        password, new_data.length, new_data,0);
             }
             isClickAlarm = false;
         }else {
@@ -288,7 +288,7 @@ public class AlarmSettingActivity extends BaseActivity {
 
     private void setMotion(int value) {
         P2PHandler.getInstance().setMotion(idOrIp,
-                password, value);
+                password, value,0);
     }
 
     @Subscribe(
@@ -351,7 +351,7 @@ public class AlarmSettingActivity extends BaseActivity {
 
     private void setLight(int value) {
         P2PHandler.getInstance().setLightMode(idOrIp,
-                password, value);
+                password, value,0);
     }
 
     private boolean isClickAlarm = false;
@@ -364,19 +364,19 @@ public class AlarmSettingActivity extends BaseActivity {
                 isClickAlarm = true;
                 alarmProgress.setVisibility(View.VISIBLE);
                 switchAlarm.setVisibility(View.GONE);
-                P2PHandler.getInstance().getBindAlarmId(idOrIp, password);
+                P2PHandler.getInstance().getBindAlarmId(idOrIp, password,0);
                 break;
             case R.id.switch_defence:
                 if ("1".equals(view.getTag())) {
                     txt.append(getString(R.string.denfence_to_not));
                     txt.append("\n");
                     P2PHandler.getInstance().setRemoteDefence(idOrIp, password,
-                            0);
+                            0,0);
                 } else {
                     txt.append(getString(R.string.not_to_denfence));
                     txt.append("\n");
                     P2PHandler.getInstance().setRemoteDefence(idOrIp, password,
-                            1);
+                            1,0);
                 }
                 defenceProgress.setVisibility(View.VISIBLE);
                 switchDefence.setVisibility(View.GONE);

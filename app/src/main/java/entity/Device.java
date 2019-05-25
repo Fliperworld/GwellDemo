@@ -153,9 +153,6 @@ public class Device implements Serializable,Comparable<Device> {
             case P2PValue.subType.IPC_868_SCENE_MODE_SHARE:
                 typeName += "IPC_868_SCENE_MODE_SHARE(" + subType + ")";
                 break;
-            case P2PValue.subType.IPC_DEV_SUB_TYPE_100W_DOORBELL:
-                typeName += "IPC_DEV_SUB_TYPE_100W_DOORBELL(" + subType + ")";
-                break;
             case P2PValue.subType.IPC_DEV_SUB_TYPE_130W_DOORBELL:
                 typeName += "IPC_DEV_SUB_TYPE_130W_DOORBELL(" + subType + ")";
                 break;

@@ -6,7 +6,6 @@ import android.util.Log;
 import com.example.dansesshou.jcentertest.MonitoerActivity;
 import com.hwangjr.rxbus.RxBus;
 import com.p2p.core.P2PInterface.IP2P;
-import com.p2p.core.pano.Decoder;
 
 import Utils.DBManager;
 import Utils.RxBUSAction;
@@ -92,15 +91,9 @@ public class P2PListener implements IP2P {
 
     }
 
-    /**
-     * 设备视频解析出来的宽高,可根据宽来判断清晰度
-     * 1280 1920 高清  640 标清  320  流畅
-     * @param iWidth 宽
-     * @param iHeight 高
-     */
     @Override
-    public void vRetPlaySize(int iWidth, int iHeight) {
-        Decoder.getInstance().setWidthHeight(iWidth,iHeight);
+    public void vRetPlaySize(int i, int i1, boolean b) {
+
     }
 
     /**

@@ -93,7 +93,8 @@ public class SensorActivity extends BaseActivity {
             public void onItemClick(int position, Integer integer) {
                 if (integer == 1) {
                     //学习配对
-                    P2PHandler.getInstance().setDefenceAreaState(deviceId, devicePass, position / 8, position % 8, 0);
+                    P2PHandler.getInstance().setDefenceAreaState(deviceId, devicePass,
+                            position / 8, position % 8, 0,0);
                     Toast.makeText(SensorActivity.this, R.string.start_pair, Toast.LENGTH_SHORT).show();
                     currentPositon = position;
 
@@ -124,7 +125,7 @@ public class SensorActivity extends BaseActivity {
             items.clear();
             adapter.notifyDataSetChanged();
             P2PHandler.getInstance().getDefenceArea(deviceId,
-                    devicePass);
+                    devicePass,0);
         }
     }
 

@@ -179,7 +179,7 @@ public class AlarmEmailActivity extends BaseActivity {
             P2PHandler.getInstance().setAlarmEmailWithSMTP(deviceId,
                     devicePsw, (byte) 3, maddressee, port,
                     msmtpAddress, msender, pwd, subject, countent,
-                    encryptType, (byte) 0, 0);
+                    encryptType, (byte) 0, 0,0);
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -328,7 +328,7 @@ public class AlarmEmailActivity extends BaseActivity {
     private Runnable runable = new Runnable() {
         public void run() {
             P2PHandler.getInstance().getAlarmEmail(deviceId,
-                    devicePsw);
+                    devicePsw,0);
         }
     };
 }

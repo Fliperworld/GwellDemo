@@ -111,8 +111,9 @@ public class PlayBackActivity extends BasePlayBackActivity {
     public void play() {
         String filename = recordFile.getName();
         //录像回放连接
-        P2PHandler.getInstance().playbackConnect(deviceId,
-                devicePwd, filename, recordFile.getPosition(), 0, 0, 896, 896, 0);
+        P2PHandler.getInstance().playbackConnect(deviceId,deviceId,
+                devicePwd, filename, recordFile.getPosition(),
+                0, 0, 896, 896, 0,0);
     }
 
     @Override
