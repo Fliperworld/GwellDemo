@@ -1,6 +1,8 @@
 package sdk;
 
 import android.app.Application;
+import android.support.multidex.MultiDexApplication;
+
 import com.p2p.core.P2PSpecial.P2PSpecial;
 
 
@@ -8,7 +10,7 @@ import com.p2p.core.P2PSpecial.P2PSpecial;
  * Created by dxs on 2016/11/29.
  */
 
-public class MyApp extends Application {
+public class MyApp extends MultiDexApplication {
     public static MyApp app;
     //two parems come frome Gwell , the value below just test
     public final static String APPID="1e9a2c3ead108413e8218a639c540e44";

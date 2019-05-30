@@ -39,6 +39,8 @@ public class MainService extends Service {
         i.setAction(Contants.P2P_CONNECT);
         i.putExtra("connect",connect);
         sendBroadcast(i);
+
+
         return super.onStartCommand(intent, flags, startId);
     }
 

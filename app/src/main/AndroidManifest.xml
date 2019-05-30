@@ -4,6 +4,7 @@
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <!-- 非必需权限,android studio生成login页面时自动添加 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -14,7 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 对讲及双向视屏时需要此权限 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!--悬浮窗测试-->
+    <!-- 悬浮窗测试 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
@@ -43,9 +44,11 @@
             android:name="com.example.dansesshou.jcentertest.PanoramaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
+
         <meta-data
             android:name="unityplayer.UnityActivity"
             android:value="true" />
+
         <activity
             android:name="com.example.dansesshou.jcentertest.LoginActivity"
             android:label="@string/title_activity_login">
@@ -53,6 +56,20 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+
+                <!-- 接收外部跳转 -->
+                <action android:name="android.intent.action.VIEW" />
+                <!-- 表示该页面可以被隐式调用，必须加上该项 -->
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- 如果希望该应用可以通过浏览器的连接启动，则添加该项 -->
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- 分享协议 -->
+                <data
+                    android:host="share"
+                    android:scheme="gwelldemo" />
             </intent-filter>
         </activity>
         <activity android:name="com.example.dansesshou.jcentertest.RecordFilesActivity" />
@@ -72,12 +89,16 @@
         <activity android:name="com.example.dansesshou.jcentertest.SerialAppActivity" />
         <activity android:name="com.example.dansesshou.jcentertest.AlarmEmailActivity" />
         <activity android:name="com.example.dansesshou.jcentertest.SettingActivity" />
-        <activity android:name="com.example.dansesshou.jcentertest.AlarmSettingActivity"></activity>
-        <activity android:name="com.example.dansesshou.jcentertest.AliPlayActivity"></activity>
+        <activity android:name="com.example.dansesshou.jcentertest.AlarmSettingActivity" />
+        <activity android:name="com.example.dansesshou.jcentertest.AliPlayActivity" />
+        <activity android:name="com.example.dansesshou.jcentertest.ConfigurationDeviceActivity" />
+        <activity android:name="com.example.dansesshou.jcentertest.SetDevicePwdActivity" />
         <activity
             android:name="com.example.dansesshou.jcentertest.ContactInfoActivity"
             android:label="ContactInfoActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.example.dansesshou.jcentertest.ShareDeviceActivity" />
+        <activity android:name="com.example.dansesshou.jcentertest.PermissionManageActivity"></activity>
     </application>
 
 </manifest>

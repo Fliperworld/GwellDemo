@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gwelldemo.R;
+import com.jwkj.smartlinkdemo.AddDeviceActivity;
 import com.p2p.core.P2PHandler;
 
 import Utils.Contants;
@@ -51,6 +52,15 @@ public class MainActivity extends BaseActivity {
     Button btnMoniter;
     @BindView(R.id.btn_panorma)
     Button btnPanoMoniter;
+    @BindView(R.id.btn_add_device)
+    Button btnAddDevice;
+    @BindView(R.id.btn_share_device)
+    Button btnShareDevice;
+    @BindView(R.id.btn_permission)
+    Button btnPermission;
+
+
+
 
 
     @Override
@@ -70,28 +80,40 @@ public class MainActivity extends BaseActivity {
     private void registReg() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Contants.P2P_CONNECT);
+        filter.addAction("GWELL_ADD_DEVICE_FOR_SHARE");
         registerReceiver(receiver, filter);
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean connect = intent.getBooleanExtra("connect", false);
-            //p2p连接失败  相应处理，用户可以根据具体情况自定义
-            if (!connect) {
-                Toast.makeText(MainActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
-                txAlert.setVisibility(View.VISIBLE);
-                btnPlayBack.setEnabled(false);
-                btnGetalarmPicture.setEnabled(false);
-                btnIn.setEnabled(false);
-                btnMoniter.setEnabled(false);
-                btnSensor.setEnabled(false);
-                btnSerialapp.setEnabled(false);
-                btnAlarmEmail.setEnabled(false);
-                btnAlarmlist.setEnabled(false);
-                btnSetting.setEnabled(false);
-                btnPanoMoniter.setEnabled(false);
+            if (Contants.P2P_CONNECT.equals(intent.getAction())) {
+                boolean connect = intent.getBooleanExtra("connect", false);
+                //p2p连接失败  相应处理，用户可以根据具体情况自定义
+                if (!connect) {
+                    Toast.makeText(MainActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
+                    txAlert.setVisibility(View.VISIBLE);
+                    btnPlayBack.setEnabled(false);
+                    btnGetalarmPicture.setEnabled(false);
+                    btnIn.setEnabled(false);
+                    btnMoniter.setEnabled(false);
+                    btnSensor.setEnabled(false);
+                    btnSerialapp.setEnabled(false);
+                    btnAlarmEmail.setEnabled(false);
+                    btnAlarmlist.setEnabled(false);
+                    btnSetting.setEnabled(false);
+                    btnPanoMoniter.setEnabled(false);
+                }
+            } else if ("GWELL_ADD_DEVICE_FOR_SHARE".equals(intent.getAction())) {
+                Intent configDevice = new Intent(mContext, ConfigurationDeviceActivity.class);
+                configDevice.putExtra(LoginActivity.USERID, userId);
+                configDevice.putExtra("contact", intent.getSerializableExtra("contact"));
+                configDevice.putExtra("isCreatePassword", intent.getBooleanExtra("isCreatePassword",false));
+                configDevice.putExtra("ipAddress", intent.getStringExtra("ipAddress"));
+                configDevice.putExtra("initPwd", intent.getStringExtra("initPwd"));
+                startActivity(configDevice);
             }
+
         }
     };
 
@@ -184,4 +206,28 @@ public class MainActivity extends BaseActivity {
         Intent setting = new Intent(this, ContactInfoActivity.class);
         startActivity(setting);
     }
+
+    @OnClick(R.id.btn_add_device)
+    public void onAddDevice() {
+        Intent addDevice = new Intent(this, AddDeviceActivity.class);
+        addDevice.putExtra(LoginActivity.USERID, userId);
+        startActivity(addDevice);
+    }
+
+    @OnClick(R.id.btn_share_device)
+    public void onShareDevice() {
+        Intent addDevice = new Intent(this, ShareDeviceActivity.class);
+        addDevice.putExtra(LoginActivity.USERID, userId);
+        startActivity(addDevice);
+    }
+
+    @OnClick(R.id.btn_permission)
+    public void onPermissionManage() {
+        Intent addDevice = new Intent(this, PermissionManageActivity.class);
+        addDevice.putExtra(LoginActivity.USERID, userId);
+        startActivity(addDevice);
+    }
+
+
+
 }

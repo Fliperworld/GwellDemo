@@ -12,6 +12,7 @@ import com.p2p.core.global.P2PConstants;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import Utils.Contants;
 import Utils.RxBUSAction;
 import entity.AlarmImageInfo;
 import entity.BindAlarmIdInfo;
@@ -125,12 +126,21 @@ public class SettingListener implements ISetting {
 
     @Override
     public void ACK_vRetSetDevicePassword(int msgId, int result) {
-
+        Intent i = new Intent();
+        i.setAction(Contants.P2P.ACK_RET_SET_DEVICE_PASSWORD);
+        i.putExtra("msgId", msgId);
+        i.putExtra("result", result);
+        MyApp.app.sendBroadcast(i);
     }
 
     @Override
     public void ACK_vRetCheckDevicePassword(int msgId, int result, String deviceId) {
         Log.e("dxsTest","msgId:"+msgId+"result:"+result+"deviceId:"+deviceId);
+        Intent i = new Intent();
+        i.setAction(Contants.P2P.ACK_RET_CHECK_PASSWORD);
+        i.putExtra("result", result);
+        i.putExtra("deviceId", deviceId);
+        MyApp.app.sendBroadcast(i);
     }
 
     @Override
@@ -228,7 +238,11 @@ public class SettingListener implements ISetting {
 
     @Override
     public void ACK_VRetSetVisitorDevicePassword(int msgId, int state) {
-
+        Intent i = new Intent();
+        i.setAction(Contants.P2P.ACK_RET_SET_VISITOR_DEVICE_PASSWORD);
+        i.putExtra("state", state);
+        i.putExtra("msgId", msgId);
+        MyApp.app.sendBroadcast(i);
     }
 
     @Override
@@ -723,12 +737,18 @@ public class SettingListener implements ISetting {
 
     @Override
     public void vRetSetInitPasswordResult(int result) {
-
+        Intent i = new Intent();
+        i.setAction(Contants.P2P.RET_SET_INIT_PASSWORD);
+        i.putExtra("result", result);
+        MyApp.app.sendBroadcast(i);
     }
 
     @Override
     public void vRetSetDevicePasswordResult(int result) {
-
+        Intent i = new Intent();
+        i.setAction(Contants.P2P.RET_SET_DEVICE_PASSWORD);
+        i.putExtra("result", result);
+        MyApp.app.sendBroadcast(i);
     }
 
     @Override
@@ -833,6 +853,10 @@ public class SettingListener implements ISetting {
 
     @Override
     public void vRetSetVisitorDevicePassword(int result) {
+        Intent i = new Intent();
+        i.setAction(Contants.P2P.RET_SET_VISITOR_DEVICE_PASSWORD);
+        i.putExtra("result", result);
+        MyApp.app.sendBroadcast(i);
 
     }
 

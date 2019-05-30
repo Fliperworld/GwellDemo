@@ -241,6 +241,39 @@ public class MonitoerActivity extends BaseMonitorActivity {
 
     @OnClick(R.id.btn_call)
     void CallOnClick() {
+        /**
+         * 监控之前需要设设备p2p版本给p2p库，需要在ISetting.vRetGetIndexFriendStatus 获取到用户所有设备信息后，
+         * 把所有设备p2p版本信息设置给MediaPlayer.setP2PLibVersion
+         *
+         *      * 设置p2p库的版本号
+         *      * @param devTable 设备列表
+         *      * @param versionTable  p2p库的版本号列表  @see ISetting.vRetGetIndexFriendStatus  @param p2pLibVersion  当前设备P2P库的版本
+         *      ISetting.vRetGetIndexFriendStatus 注释如下
+         *      * @param count 设备数量
+         *      * @return
+         *
+         *    public static native boolean setP2PLibVersion ( int[] devTable, short[] versionTable,int count);
+         *
+         *
+         *      * Index服务器返回设备信息（区别于P2P服务器返回数据，存在兼容标记）
+         *      *
+         *      * @param count          设备信息数量
+         *      * @param contactIds     设备ID
+         *      * @param IdProtery      设备属性 &0x1==1（最低位为1）则支持Index服务器
+         *      * @param status         设备在线状态 0:离线 1:在线
+         *      * @param DevTypes       设备类型
+         *      * @param SubType        设备子类型（需支持Index服务器）
+         *      * @param DefenceState   设备布撤防状态（需支持Index服务器）
+         *      * @param bRequestResult Index请求结果标记  非0时正常  为0时需要重新请求P2P服务器
+         *      * @param defenceFlag    布撤防状态标记(主要用于判断index服务器与设备返回哪个值较新,如果index返回的flag比设备返回的flag较小，则丢弃index的布撤防返回状态)
+         *      * @param p2pLibVersion  当前设备P2P库的版本
+         *
+         *     void vRetGetIndexFriendStatus ( int count, String[] contactIds,int[] IdProtery,
+         *    int[] status, int[] DevTypes, int[] SubType, int[] DefenceState, byte bRequestResult,
+         *     long[] defenceFlag,int[][] configs, int[][] infos, int[] startAuthManage, short[] p2pLibVersion);
+         *
+         */
+        MediaPlayer.setP2PLibVersion(new int[]{9082821}, new short[]{1284}, 1);
         callID = etId.getText().toString().trim();//设备号
         CallPwd = etPwd.getText().toString().trim();
         if (TextUtils.isEmpty(callID) || TextUtils.isEmpty(CallPwd)) {

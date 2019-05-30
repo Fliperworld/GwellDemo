@@ -94,6 +94,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/floatview" />
+            <Button
+                android:id="@+id/btn_add_device"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="添加设备" />
+            <Button
+                android:id="@+id/btn_share_device"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="分享设备" />
+            <Button
+                android:id="@+id/btn_permission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="权限管理" />
 
         </LinearLayout>
     </ScrollView>
