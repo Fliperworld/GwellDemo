@@ -1484,6 +1484,11 @@ public class SettingListener implements ISetting {
     }
 
     @Override
+    public void vRetGetHaveRecordDays(String deviceId, byte[] data) {
+
+    }
+
+    @Override
     public void ACK_vRetGuardSetting(String s, int i) {
 
     }
@@ -1517,6 +1522,71 @@ public class SettingListener implements ISetting {
     @Override
     public void ACK_vRetSetNightColorSupport(String deviceId, int result) {
         RxBus.get().post(RxBUSAction.EVENT_RET_SET_NIGHT_COLOR,new Integer(result));
+    }
+
+    @Override
+    public void vRetGetDownloadVideoQuality(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetDownloadVideoQuality(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetGetBodyDetection(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetBodyDetection(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetRedBlueAlarmLightSetting(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetSpecialAlarmSoundSetting(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetWhiteAlarmLightSetting(String deviceId, int result) {
+
+    }
+
+    @Override
+    public void vRetSetRedBlueAlarmLight(String s, int iResult) {
+
+    }
+
+    @Override
+    public void vRetSetSpecialAlarmSound(String s, int iResult) {
+
+    }
+
+    @Override
+    public void vRetSetWhiteAlarmLight(String s, int iResult) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetSpecialAlarmSound(String s, int convertAckResult) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetRedBlueAlarmLight(String s, int convertAckResult) {
+
+    }
+
+    @Override
+    public void ACK_vRetSetWhiteAlarmLight(String s, int convertAckResult) {
+
     }
 
 }

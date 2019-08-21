@@ -29,6 +29,11 @@
 
 # P2P-Core 使用说明
 ### 1.版本记录
+#####  0.5.4 (2019.8.21)
+* 【修改】p2p库3.0部分接口更新
+* 【新增】支持arm64-v8a
+
+
 #####  改用aar包 (2019.5.25)
 * 【修改】p2p库升级为3.0
 P2PHandle中大部分方法增加参数：localAreaIp
@@ -143,7 +148,7 @@ public class P2PListener implements IP2P {
     	public void vReject(String deviceId, int reason_code) {
     		//监控挂断时回调
         	Intent intent = new Intent();
-        	intent.setAction(MonitoerActivity.P2P_REJECT);
+        	intent.setAction(MonitorActivity.P2P_REJECT);
         	intent.putExtra("reason_code", reason_code);
        		MyApp.app.sendBroadcast(intent);
     	}

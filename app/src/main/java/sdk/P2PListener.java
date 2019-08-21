@@ -3,7 +3,7 @@ package sdk;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.dansesshou.jcentertest.MonitoerActivity;
+import com.example.dansesshou.jcentertest.MonitorActivity;
 import com.hwangjr.rxbus.RxBus;
 import com.p2p.core.P2PInterface.IP2P;
 
@@ -35,7 +35,7 @@ public class P2PListener implements IP2P {
     @Override
     public void vReject(String deviceId, int reason_code, int exCode1, int exCode2) {
         Intent intent = new Intent();
-        intent.setAction(MonitoerActivity.P2P_REJECT);
+        intent.setAction(MonitorActivity.P2P_REJECT);
         intent.putExtra("reason_code", reason_code);
         intent.putExtra("exCode1", exCode1);
         intent.putExtra("exCode2", exCode2);
@@ -50,7 +50,7 @@ public class P2PListener implements IP2P {
     @Override
     public void vAccept(int type, int state) {
         Intent accept = new Intent();
-        accept.setAction(MonitoerActivity.P2P_ACCEPT);
+        accept.setAction(MonitorActivity.P2P_ACCEPT);
         accept.putExtra("type", new int[]{type, state});
         MyApp.app.sendBroadcast(accept);
     }
@@ -61,7 +61,7 @@ public class P2PListener implements IP2P {
     @Override
     public void vConnectReady() {
         Intent intent = new Intent();
-        intent.setAction(MonitoerActivity.P2P_READY);
+        intent.setAction(MonitorActivity.P2P_READY);
         MyApp.app.sendBroadcast(intent);
     }
 

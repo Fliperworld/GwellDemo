@@ -25,6 +25,7 @@ import com.p2p.core.MediaPlayer;
 import com.p2p.core.P2PHandler;
 import com.p2p.core.P2PSpecial.HttpErrorCode;
 import com.p2p.core.P2PSpecial.HttpSend;
+import com.p2p.core.utils.SharedPrefreUtils;
 
 import Utils.ToastUtils;
 import butterknife.ButterKnife;
@@ -40,6 +41,8 @@ import sdk.SettingListener;
  */
 public class LoginActivity extends AppCompatActivity {
     public final static String USERID="USERID";
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -63,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
         if (mPasswordView == null) {
             Log.e("dxsTest", "mPasswordView==null");
         }
+        mEmailView.setText(SharedPrefreUtils.getInstance().getStringData(mContext,USERNAME));
+        mPasswordView.setText(SharedPrefreUtils.getInstance().getStringData(mContext,PASSWORD));
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -140,6 +145,8 @@ public class LoginActivity extends AppCompatActivity {
                             saveAuthor(loginResult);
                             P2PHandler.getInstance().p2pInit(mContext, new P2PListener(), new SettingListener());
                             setDeviceP2pVersion();
+                            SharedPrefreUtils.getInstance().putStringData(mContext, USERNAME, mEmailView.getText().toString());
+                            SharedPrefreUtils.getInstance().putStringData(mContext, PASSWORD, mPasswordView.getText().toString());
                             Intent callIntent = new Intent(MyApp.app, MainActivity.class);
                             callIntent.putExtra(LoginActivity.USERID, userId);
                             startActivity(callIntent);

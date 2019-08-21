@@ -134,7 +134,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_moniter)
     public void toMoniter() {
-        Intent moniter = new Intent(this, MonitoerActivity.class);
+        Intent moniter = new Intent(this, MonitorActivity.class);
         moniter.putExtra(LoginActivity.USERID, userId);
         startActivity(moniter);
         Log.e("dxsTest", "toMoniter" + userId);
