@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.gwelldemo.R;
 import com.jwkj.smartlinkdemo.AddDeviceActivity;
 import com.p2p.core.P2PHandler;
+import com.p2p.core.utils.SharedPrefreUtils;
 
 import Utils.Contants;
 import butterknife.BindView;
@@ -70,6 +71,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         userId = getIntent().getStringExtra(LoginActivity.USERID);
+        SharedPrefreUtils.getInstance().putStringData(this, Contants.USERID, userId);
         initUI();
         initData();
         Intent intent = new Intent(this, MainService.class);
@@ -209,9 +211,9 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.btn_add_device)
     public void onAddDevice() {
-        Intent addDevice = new Intent(this, AddDeviceActivity.class);
-        addDevice.putExtra(LoginActivity.USERID, userId);
-        startActivity(addDevice);
+        Intent intent = new Intent(this, ChooseAddWayActivity.class);
+        intent.putExtra(LoginActivity.USERID, userId);
+        startActivity(intent);
     }
 
     @OnClick(R.id.btn_share_device)

@@ -137,4 +137,5 @@ dependencies {
     compile 'com.libhttp:libhttp:v0.5.4'
     implementation project(':smartlink')
     //implementation project(':p2p-core')
+    implementation files('libs/javabase64.jar')
 }

@@ -1,28 +1,16 @@
 package com.example.dansesshou.jcentertest;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gwelldemo.R;
 import com.libhttp.entity.DeviceBindMasterResult;
@@ -34,13 +22,12 @@ import com.p2p.core.P2PHandler;
 import com.p2p.core.P2PSpecial.HttpErrorCode;
 import com.p2p.core.P2PSpecial.HttpSend;
 import com.p2p.core.P2PValue;
-import com.p2p.core.global.SDKError;
-import com.p2p.core.utils.MobileStatUtils;
 import com.p2p.core.utils.MyUtils;
 
 import Utils.Contants;
 import Utils.Util;
 import entity.Contact;
+import entity.WifiInformation;
 
 /**
  * <p>
@@ -95,6 +82,7 @@ public class ConfigurationDeviceActivity extends BaseActivity {
     TextView tx_receive;
     Button  btn;
     EditText et_pwd;
+    private WifiInformation wifiInformation;
 
 
 
@@ -111,6 +99,7 @@ public class ConfigurationDeviceActivity extends BaseActivity {
         isSetPwd = getIntent().getBooleanExtra("isSetPwd", false);
         visitorUserPwd = getIntent().getStringExtra("visitorUserPwd");
         visitorPwd = getIntent().getStringExtra("visitorPwd");
+        wifiInformation = (WifiInformation) getIntent().getSerializableExtra("WifiInformation");
         if (!TextUtils.isEmpty(ipAddress)) {
             ipFrag = ipAddress.substring(ipAddress.lastIndexOf(".") + 1, ipAddress.length());
         }
@@ -569,7 +558,7 @@ public class ConfigurationDeviceActivity extends BaseActivity {
                     case HttpErrorCode.ERROR_0:
 //                        DeviceSyncSPUtils.build().with(context).saveLastUpgradeFlag(result.getLastUpgradeFlag());
                         setUIStep(3);
-                        showInfo("以可分享的方式添加设备成功！");
+                        showInfo("添加设备成功！");
                         finish();
                         break;
                     case HttpErrorCode.ERROR_10902012:

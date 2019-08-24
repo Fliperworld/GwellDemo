@@ -7,6 +7,7 @@ public class Contants {
 
     public static final String P2P_CONNECT ="com.example.dansesshou."+"P2P_CONNECT";
     public static final String PACKAGE_NAME = "com.gwelldemo.";
+    public static final String USERID = "login_userid";
 
     public static class P2P {
         public static final String RET_SET_INIT_PASSWORD = PACKAGE_NAME
@@ -48,8 +49,32 @@ public class Contants {
         public static class DEVICE_PASSWORD_SET {
             public static final int SETTING_SUCCESS = 0;
         }
+    }
 
+    public static class ConnectWifiType {
+        public static final int SMART_LINK = 0;//智能联机
+        public static final int AP_LINK_AP_LIST = 1;//AP连接
+        public static final int AP_LINK_DEVICE_LIST = 2;//从设备列表进去的AP连接
+        public static final int SIMPLECONFIG = 3;//simpleconfig配网
+        public static final int SCAN = 4;//扫码配网
+    }
 
+    public static class Action {
+        public final static String GET_FRIENDS_STATE = PACKAGE_NAME
+                + "GET_FRIENDS_STATE";
+        public final static String ACTION_NETWORK_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE";
+    }
+
+    public static class DeviceState {
+        public static final int ONLINE = 1;
+        public static final int OFFLINE = 0;
+    }
+
+    public static class DeviceFlag {
+        public static final int UNSET_PASSWORD = 0;
+        public static final int ALREADY_SET_PASSWORD = 1;
+        public static final int AP_MODE = 2;
+        public static final int UNKNOW = 3;
     }
 
 }

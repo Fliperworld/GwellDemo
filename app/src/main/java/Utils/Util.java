@@ -2,19 +2,22 @@ package Utils;
 
 import android.content.Context;
 import android.net.DhcpInfo;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.libhttp.entity.DeviceSync;
-import com.libhttp.utils.HttpErrorCode;
+import com.libhttp.entity.HttpResult;
 import com.p2p.core.P2PHandler;
+import com.p2p.core.P2PSpecial.HttpErrorCode;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -203,5 +206,142 @@ public class Util {
         } else {
             return email;
         }
+    }
+
+
+
+    /**
+     * 是否是只需要弹窗的错误码
+     *
+     * @param errorCode webAPI专用
+     * @return
+     */
+    public static boolean isTostCmd(String errorCode) {
+        switch (errorCode) {
+            case com.p2p.core.P2PSpecial.HttpErrorCode.ERROR_10000:
+            case com.p2p.core.P2PSpecial.HttpErrorCode.ERROR_10001:
+            case com.p2p.core.P2PSpecial.HttpErrorCode.ERROR_10901061:
+            case com.p2p.core.P2PSpecial.HttpErrorCode.ERROR_10901060:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static <T extends HttpResult> boolean isTostCmd(T t) {
+        switch (t.getError_code()) {
+            case com.p2p.core.P2PSpecial.HttpErrorCode.ERROR_10000:
+            case com.p2p.core.P2PSpecial.HttpErrorCode.ERROR_10001:
+            case com.p2p.core.P2PSpecial.HttpErrorCode.ERROR_10901061:
+            case HttpErrorCode.ERROR_10901060:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * 特殊处理的服务器反馈码
+     *
+     * @param errorCode 错误码
+     * @param msg       错误信息
+     * @return 用户看到的提示信息
+     */
+    public static String GetToastCMDString(String errorCode, String msg) {
+        switch (errorCode) {
+            case HttpErrorCode.ERROR_10001:
+            case HttpErrorCode.ERROR_10901061:
+                return msg + "(" + errorCode + ")";
+            case HttpErrorCode.ERROR_10000:
+            case HttpErrorCode.ERROR_10901060:
+                return "系统异常";
+            default:
+                return String.valueOf(errorCode);
+        }
+    }
+
+    /**
+     * 特殊处理的服务器反馈码
+     *
+     * @param t            服务器请求结果
+     * @param <T>服务器请求结果父类
+     * @return 用户看到的提示信息
+     */
+    public static <T extends HttpResult> String GetToastCMDString(T t) {
+        switch (t.getError_code()) {
+            case HttpErrorCode.ERROR_10001:
+            case HttpErrorCode.ERROR_10901061:
+                return t.getError() + "(" + t.getError_code() + ")";
+            case HttpErrorCode.ERROR_10000:
+            case HttpErrorCode.ERROR_10901060:
+                return "系统异常";
+            default:
+                return String.valueOf(t.getError_code());
+        }
+    }
+
+    /**
+     * 生成随机密码
+     *
+     * @param pwdType 生成随机密码类型(0是主人非0是访客)
+     * @return 生成的随机字母密码与随机数字密码 String[0]为随机字母密码，String[1]为随机数字密码
+     */
+    public static String[] createRandomPassword(int pwdType) {
+        String prePwd = pwdType == 0 ? "master" : "visitor";
+        String time = String.valueOf(System.currentTimeMillis());
+        String proPwd = getRandomString(8);
+        String UserPwd = prePwd + time + proPwd;
+        String contactPwd = P2PHandler.getInstance().EntryPassword(UserPwd);
+        return new String[]{UserPwd, contactPwd};
+    }
+
+    /**
+     * 产生随机字符串
+     *
+     * @param length 随机字符串长度
+     * @return 随机字符串
+     */
+    public static String getRandomString(int length) {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(62);
+            sb.append(str.charAt(number));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 判断是不是5Gwifi
+     *
+     * @param frequency
+     * @return
+     */
+    public static boolean is5GWifi(int frequency) {
+        String str = String.valueOf(frequency);
+        if (str.length() > 0) {
+            char a = str.charAt(0);
+            if (a == '5') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * WiFi是否加密
+     *
+     * @param result
+     * @return
+     */
+    public static boolean isWifiOpen(ScanResult result) {
+        return !(result.capabilities.toLowerCase().indexOf("wep") != -1
+                || result.capabilities.toLowerCase().indexOf("wpa") != -1);
+    }
+
+    public static int dip2px(Context context, int dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
     }
 }
