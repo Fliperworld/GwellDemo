@@ -382,7 +382,7 @@ public class MonitorActivity extends BaseMonitorActivity {
         if (P2PHandler.getInstance().starRecoding(pathName)) {
             Toast.makeText(MonitorActivity.this, " 正在录像", Toast.LENGTH_SHORT).show();
         } else {
-            //录像初始化失败
+            //录像初始化失败  可能原因是当前未申请读写权限
             Toast.makeText(MonitorActivity.this, " 初始化录像失败", Toast.LENGTH_SHORT).show();
         }
     }
