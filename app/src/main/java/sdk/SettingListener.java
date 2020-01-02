@@ -27,6 +27,7 @@ import entity.DenfenceInfo;
  */
 
 public class SettingListener implements ISetting {
+    private static final String TAG = "SettingListener";
 
 
     @Override
@@ -1187,9 +1188,33 @@ public class SettingListener implements ISetting {
 
     }
 
+    /**
+     * Index服务器返回设备信息（区别于P2P服务器返回数据，存在兼容标记）
+     *
+     * @param count          设备信息数量
+     * @param contactIds     设备ID
+     * @param IdProtery      设备属性 &0x1==1（最低位为1）则支持Index服务器
+     * @param status         设备在线状态 0:离线 1:在线
+     * @param DevTypes       设备类型
+     * @param SubType        设备子类型（需支持Index服务器）
+     * @param DefenceState   设备布撤防状态（需支持Index服务器）
+     * @param bRequestResult Index请求结果标记  非0时正常  为0时需要重新请求P2P服务器
+     * @param defenceFlag    布撤防状态标记(主要用于判断index服务器与设备返回哪个值较新,如果index返回的flag比设备返回的flag较小，则丢弃index的布撤防返回状态)
+     * @param configs        每个ID占3DWORD ,第N个ID configs[N][0]: bit0 支持声控  bit1 支持电池  bit2  支持2K视频   bit3 支持4K视频 configs[N][1]:预留   configs[N][2]:bit0  支持权限管理
+     * @param infos          每个ID占3DWORD ,第N个ID infos[N][0]:byte0 电池电量    infos[N][1]:预留  infos[N][2]:预留
+     * @param startAuthManage 开启权限管理（0:设备没有开启权限管理功能，1：设备已经开启权限管理功能）
+     * @param p2pLibVersion  当前设备P2P库的版本
+     */
     @Override
-    public void vRetGetIndexFriendStatus(int i, String[] strings, int[] ints, int[] ints1, int[] ints2, int[] ints3, int[] ints4, byte b, long[] longs, int[][] ints5, int[][] ints6, int[] ints7, short[] shorts) {
-
+    public void vRetGetIndexFriendStatus(int count, String[] contactIds, int[] IdProtery,
+                                         int[] status, int[] DevTypes, int[] SubType, int[] DefenceState, byte bRequestResult, long[] defenceFlag,
+                                         int[][] configs, int[][] infos, int[] startAuthManage, short[] p2pLibVersion) {
+        Log.d(TAG, "vRetGetIndexFriendStatus 返回设备列表数量count = " + count);
+        Intent intent = new Intent();
+        intent.setAction(Contants.P2P.RET_FRIEND_STATUS);
+        intent.putExtra("contactIds", contactIds);
+        intent.putExtra("p2pLibVersion", p2pLibVersion);
+        MyApp.app.sendBroadcast(intent);
     }
 
     /**

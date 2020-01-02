@@ -25,6 +25,8 @@ public class Contants {
                 + "ACK_RET_SET_DEVICE_PASSWORD";
         public static final String RET_SET_DEVICE_PASSWORD = PACKAGE_NAME
                 + "RET_SET_DEVICE_PASSWORD";
+
+        public static final String RET_FRIEND_STATUS = PACKAGE_NAME + "RET_FRIEND_STATUS";
     }
 
     public static class P2P_SET {

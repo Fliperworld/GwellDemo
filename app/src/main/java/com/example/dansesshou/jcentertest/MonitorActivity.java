@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import Utils.Contants;
 import Utils.ToastUtils;
 import Utils.Util;
 import butterknife.BindView;
@@ -89,6 +90,7 @@ public class MonitorActivity extends BaseMonitorActivity {
     private int recordFlag = 0;
     private String pathName = "";
     private Activity activity;
+    private static final String TAG = "MonitorActivity";
 
 
     @Override
@@ -241,47 +243,8 @@ public class MonitorActivity extends BaseMonitorActivity {
 
     @OnClick(R.id.btn_call)
     void CallOnClick() {
-        /**
-         * 监控之前需要设设备p2p版本给p2p库，需要在ISetting.vRetGetIndexFriendStatus 获取到用户所有设备信息后，
-         * 把所有设备p2p版本信息设置给MediaPlayer.setP2PLibVersion
-         *
-         *      * 设置p2p库的版本号
-         *      * @param devTable 设备列表
-         *      * @param versionTable  p2p库的版本号列表  @see ISetting.vRetGetIndexFriendStatus  @param p2pLibVersion  当前设备P2P库的版本
-         *      ISetting.vRetGetIndexFriendStatus 注释如下
-         *      * @param count 设备数量
-         *      * @return
-         *
-         *    public static native boolean setP2PLibVersion ( int[] devTable, short[] versionTable,int count);
-         *
-         *
-         *      * Index服务器返回设备信息（区别于P2P服务器返回数据，存在兼容标记）
-         *      *
-         *      * @param count          设备信息数量
-         *      * @param contactIds     设备ID
-         *      * @param IdProtery      设备属性 &0x1==1（最低位为1）则支持Index服务器
-         *      * @param status         设备在线状态 0:离线 1:在线
-         *      * @param DevTypes       设备类型
-         *      * @param SubType        设备子类型（需支持Index服务器）
-         *      * @param DefenceState   设备布撤防状态（需支持Index服务器）
-         *      * @param bRequestResult Index请求结果标记  非0时正常  为0时需要重新请求P2P服务器
-         *      * @param defenceFlag    布撤防状态标记(主要用于判断index服务器与设备返回哪个值较新,如果index返回的flag比设备返回的flag较小，则丢弃index的布撤防返回状态)
-         *      * @param p2pLibVersion  当前设备P2P库的版本
-         *
-         *     void vRetGetIndexFriendStatus ( int count, String[] contactIds,int[] IdProtery,
-         *    int[] status, int[] DevTypes, int[] SubType, int[] DefenceState, byte bRequestResult,
-         *     long[] defenceFlag,int[][] configs, int[][] infos, int[] startAuthManage, short[] p2pLibVersion);
-         *
-         */
-        MediaPlayer.setP2PLibVersion(new int[]{9082821}, new short[]{1284}, 1);
         callID = etId.getText().toString().trim();//设备号
-        CallPwd = etPwd.getText().toString().trim();
-        if (TextUtils.isEmpty(callID) || TextUtils.isEmpty(CallPwd)) {
-            ToastUtils.ShowError(this, getString(R.string.tips_idpwd), 2000, true);
-            return;
-        }
-        String pwd = P2PHandler.getInstance().EntryPassword(CallPwd);//经过转换后的设备密码
-        P2PHandler.getInstance().call(userId, pwd, true, 1, callID, "", "", 2, callID,0);
+        P2PHandler.getInstance().getFriendStatus(new String[]{callID});
     }
 
     @OnClick(R.id.btn_sd)
@@ -416,13 +379,39 @@ public class MonitorActivity extends BaseMonitorActivity {
         filter.addAction(P2P_REJECT);
         filter.addAction(P2P_ACCEPT);
         filter.addAction(P2P_READY);
+        filter.addAction(Contants.P2P.RET_FRIEND_STATUS);
         registerReceiver(mReceiver, filter);
     }
 
     public BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(P2P_ACCEPT)) {
+            if (intent.getAction().equals(Contants.P2P.RET_FRIEND_STATUS)) {
+                Log.d(TAG, "RET_FRIEND_STATUS 获取P2P版本号成功，开启监控");
+                String[] contactIds = intent.getStringArrayExtra("contactIds");
+                short[] p2pLibVersions = intent.getShortArrayExtra("p2pLibVersion");
+                int[] devTable = new int[contactIds.length];
+                for (int i=0; i<contactIds.length;i++) {
+                    if (contactIds[i].substring(0, 1).equals("0")) {
+                        devTable[i] = Integer.parseInt(contactIds[i]) | 0x80000000;
+                    }else {
+                        devTable[i] = Integer.parseInt(contactIds[i]);
+                    }
+                }
+                /**
+                 * 重点注意：在实际项目中，在冷启动APP的时候调用获取设备在线状态后(getFriendStatus), 会有vRetGetIndexFriendStatus的回调
+                 * 在此函数中最后一个参数，表示的就是p2pLibVersion  拿到之后就应该保存到开发者当前数据库，然后在下次冷启动时取出，
+                 * 调用setP2PLibVersion 设置一次即可  无需在此处每次监控都调用一次
+                 */
+                MediaPlayer.setP2PLibVersion(devTable, p2pLibVersions, contactIds.length);
+                CallPwd = etPwd.getText().toString().trim();
+                if (TextUtils.isEmpty(callID) || TextUtils.isEmpty(CallPwd)) {
+                    ToastUtils.ShowError(MonitorActivity.this, getString(R.string.tips_idpwd), 2000, true);
+                    return;
+                }
+                String pwd = P2PHandler.getInstance().EntryPassword(CallPwd);//经过转换后的设备密码
+                P2PHandler.getInstance().call(userId, pwd, true, 1, callID, "", "", 2, callID,0);
+            } else if (intent.getAction().equals(P2P_ACCEPT)) {
                 int[] type = intent.getIntArrayExtra("type");
                 P2PView.type = type[0];
                 P2PView.scale = type[1];
